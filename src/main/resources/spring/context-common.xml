@@ -8,9 +8,13 @@
     <bean id="dealer" class="blackjack.Dealer" />
     <bean id="deck" class="blackjack.Deck"/>
 
-    <bean id="game" class="blackjack.Game">
-        <constructor-arg index="0" ref="dealer" />
+    <bean id="rule" class="blackjack.Rule">
+        <constructor-arg index="0" value="21" />
         <constructor-arg index="1" ref="player" />
+        <constructor-arg index="2" ref="dealer" />
+    </bean>
+    <bean id="game" class="blackjack.Game">
+        <constructor-arg index="0" ref="rule" />
     </bean>
 
 </beans>

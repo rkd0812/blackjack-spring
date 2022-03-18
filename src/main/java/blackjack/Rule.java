@@ -2,15 +2,48 @@ package blackjack;
 
 import blackjack.enums.PlayerResult;
 
+import java.util.Scanner;
+
 public class Rule {
-    private int baseScore;
-    private Player player;
-    private Dealer dealer;
+    private final int baseScore;
+    private final Player player;
+    private final Dealer dealer;
 
     public Rule(int baseScore, Player player, Dealer dealer) {
         this.baseScore = baseScore;
         this.player = player;
         this.dealer = dealer;
+    }
+
+    public void startPhase() {
+        dealer.drawCard();
+        player.receivedCard(dealer.drawSendCard());
+        dealer.drawCard();
+        player.receivedCard(dealer.drawSendCard());
+        burstCheck();
+        player.showCards();
+    }
+
+    public void selectPhase() {
+        String command = "";
+        while (!"S".equals(command)) {
+            System.out.println("카드를 받으려면 H 이대로 멈추려면 S 를 입력하세요.");
+            Scanner scanner = new Scanner(System.in);
+            command = scanner.next();
+            if ("H".equals(command)) {
+                player.receivedCard(dealer.drawSendCard());
+                player.showCards();
+                burstCheck();
+            }
+        }
+    }
+
+    private void burstCheck() {
+        if (isBurst(player)) {
+            System.out.println("Player Burst 입니다.");
+            System.out.println("게임을 종료합니다.");
+            System.exit(0);
+        }
     }
 
     public boolean isBurst(Player player) {
